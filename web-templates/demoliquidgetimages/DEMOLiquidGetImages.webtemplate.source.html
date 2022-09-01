@@ -1,0 +1,47 @@
+{% fetchxml getimages %}
+<fetch version='1.0' output-format='xml-platform' mapping='logical' distinct='false'>
+  <entity name='annotation'>
+    <attribute name='subject' />
+    <attribute name='notetext' />
+    <attribute name='filename' />
+    <attribute name='annotationid' />
+    <attribute name='filesize' />
+    <attribute name='documentbody' />
+    <order attribute='subject' descending='false' />
+    <filter type='and'>
+      <condition attribute='isdocument' operator='eq' value='1' />
+    </filter>
+    <link-entity name='p3i_product' from='p3i_productid' to='objectid' link-type='inner' alias='ac' />
+  </entity>
+</fetch>
+{% endfetchxml %}
+
+<div class="wrapper">
+
+  <!-- filter Items -->
+  <nav>
+    <div class="items">
+    </div>
+  </nav>
+<!-- filter Images -->
+  <div class="gallery" style="width: 100%;">
+    {% for photo in getimages.results.entities %}    
+      <div class="image" data-name=" {{ photo.subject }} " onclick="preview(this)">
+        <span>
+          <a id="imgdownload {{ photo.subject }}" href="data:image/jpg;base64,{{ photo.documentbody }}" download="image.png">
+            <img src="data:image/jpg;base64,{{ photo.documentbody }}" alt=''>
+          </a>
+        </span>
+        <div>
+          <p style='color:white;'>{{ photo.subject }}</p>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+<!-- fullscreen img preview box -->
+<div class="preview-box">
+  <div class="details"><span class="title">Image Category: <p></p></span><span class="icon fas fa-times"></span></div>
+  <div class="image-box"><img src="" alt=""></div>
+</div>
+<div class="shadow"></div>
